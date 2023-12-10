@@ -27,7 +27,7 @@ Contents
 Citing
 ------
 
-If you use hPIC2, please cite us in your publication :cite:`keniley2019crane`:
+If you use CRANE, please cite us in your publication :cite:`keniley2019crane`:
 
 .. code-block:: bibtex
 
