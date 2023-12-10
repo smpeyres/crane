@@ -1,22 +1,50 @@
 Welcome to CRANE
-=====
+================
 
 .. warning::
 
    Documentation pages of CRANE are under construction.
 
-`CRANE <https://arxiv.org/abs/1905.10004>`_ (Chemical ReAction NEtwork) is an open-source
-`MOOSE <https://mooseframework.inl.gov/>`_-based **plasma chemistry**
-software developed by the Laboratory of Computational Plasma Physics (LCPP)
-at the University of Illinois Urbana-Champaign, that was designed to
-address non-equilibrium plasma chemistry problems of arbitrary size.
+`CRANE <https://arxiv.org/abs/1905.10004>`_ (Chemical ReAction NEtwork) is an
+open-source software for the simulation of chemical kinetics in
+nonequilibrium plasmas developed by the
+Laboratory of Computational Plasma Physics (LCPP) at the University of Illinois Urbana-Champaign.
+It is designed to be used either as a standalone application,
+or as a coupled application within the MOOSE finite element framework.
+CRANE is written in C++ and is released under the
+`LGPL-2.1 License v3.0 <https://github.com/lcpp-org/crane/blob/master/LICENSE>`_.
+
+CRANE was developed within the `MOOSE <https://mooseframework.inl.gov/>`_ framework.
+MOOSE (Multiphysics Object Oriented Simulation Environment) is a finite element software
+developed at Idaho National Labroatory :cite:t:`gaston2009MOOSE`,
+which provides a software framework for coupled nonlinear multiphysics simulations.
+MOOSE's modular structure allows different codes to be coupled in two ways:
+they may be compiled together and included in a single fully coupled nonlinear solver,
+or applications can be loosely coupled with the ``MultiApp`` system.
+Primarily built for large-scale nuclear reactor simulations,
+the MOOSE framework is well-suited to the study of plasmas due to its massively parallel operation
+and its ability to treat multi-phase systems (such as plasma-liquid interactions).
+
+CRANE aims to further expand the plasma simulation capabilties of the MOOSE framework
+by including a chemical kinetics solver. Using the MOOSE framework's *Actions* system,
+CRANE allows lists of chemical reactions to be added to the input file in a simple,
+human-readable format to construct reaction networks. These lists are then parsed
+and constructed into separate *Kernels* for each reacant and product in each reaction.
+The addition of reactions requires no C++ programming from the user.
 
 CRANE can be used on its own, without any other MOOSE modules or applications.
 In this case, zero-dimensional (0D) modeling of global/volume-averaged chemical kinetics is supported.
+If compiled into other MOOSE applications as a submoduke, CRANE provides the user with the ability
+to solve chemical reaction networks as part of a larger multiphysics simulation.
 
-`Zapdos <http://dx.doi.org/10.1088/0022-3727/49/23/235204s>`_ is a separate software developed by the Shannon Lab
-at the North Carolina State University for the modeling of low-temperature plasmas.
-Zapdos is coupled to CRANE to allow for easier multidimensional (1D, 2D, 3D) modeling of reactive plasma systems.
+The relative ease of coupling different codes together is a strong advantage
+for both CRANE and other MOOSE applications.
+By compiling CRANE as a submodule in `Zapdos <http://dx.doi.org/10.1088/0022-3727/49/23/235204s>`_,
+which is a separate software developed by the Shannon Lab at the North Carolina State University
+for drift-diffusion modeling of low-temperature plasmas, a user is able to numerically solve a
+fully-coupled system of multispecies drift-diffusion-reaction equations in multidimensional domains
+(1D, 2D, 3D) to simulate nonequilibrium plasma discharges, such as plasma-liquid interactions
+and processing plasma chambers.
 If you wish to use Zapdos in conjunction with CRANE,
 please visit `Zapdos' Github repository <https://github.com/shannon-lab/zapdos>`.
 
