@@ -11,6 +11,15 @@ software developed by the Laboratory of Computational Plasma Physics (LCPP)
 at the University of Illinois Urbana-Champaign, that was designed to
 address non-equilibrium plasma chemistry problems of arbitrary size.
 
+CRANE can be used on its own, without any other MOOSE modules or applications.
+In this case, zero-dimensional (0D) modeling of global/volume-averaged chemical kinetics is supported.
+
+`Zapdos <http://dx.doi.org/10.1088/0022-3727/49/23/235204s>`_ is a separate software developed by the Shannon Lab
+at the North Carolina State University for the modeling of low-temperature plasmas.
+Zapdos is coupled to CRANE to allow for easier multidimensional (1D, 2D, 3D) modeling of reactive plasma systems.
+If you wish to use Zapdos in conjunction with CRANE,
+please visit `Zapdos' Github repository <https://github.com/shannon-lab/zapdos>`.
+
 Contents
 --------
 
