@@ -14,14 +14,26 @@ import pandas as pd
 
 filename = 'argon_test_out.csv'
 data = pd.read_csv(filename)
+data['reduced_field_Td'] = data['reduced_field'] * 1e21
 
-fig, ax = plt.subplots()
+fig, ax1 = plt.subplots()
 
-ax.semilogx(data['time'], data['reduced_field'], 'k', label='E/N', linewidth=4)
+ax1.loglog(data['time'], data['reduced_field_Td'], 'k', linewidth=2)
+ax1.set_xlabel('Time (s)')
+ax1.set_ylabel('Reduced Field, $E/N$ (Td)', color='k')
+ax1.tick_params(axis='y', colors='k')
+ax1.tick_params(axis='both', which='both', direction='out', top=True, right=True)
+ax1.set_xlim([1e-10, 1e-3])
+ax1.set_ylim([1e0, 1e2])
 
-ax.set_xlabel('Time (s)', fontsize=20)
-ax.set_ylabel('Reduced Field, E/N (V m$^{-2}$)', fontsize=20)
-ax.tick_params(axis='both', labelsize=15)
-ax.legend(fontsize=15)
-fig.savefig('reduced_field.png', bbox_inches='tight')
+ax2 = ax1.twinx()
+ax2.semilogx(data['time'], data['Te'], 'r--', linewidth=2)
+ax2.set_ylabel('Electron Temperature, $T_e$ (eV)', color='r')
+ax2.tick_params(axis='y', colors='r')
+ax2.set_ylim(top=6.9)
+
+# Make the right axis red
+ax2.spines['right'].set_color('r')
+
+fig.savefig('reduced_field_and_electron_temperature.png', bbox_inches='tight', dpi=600)
 plt.show()

@@ -7,40 +7,34 @@
 []
 
 [Variables]
-  # ODE variables
   [e]
     family = SCALAR
     order = FIRST
     initial_condition = 1e6
-    # scaling = 1e-2
   []
 
   [Ar+]
     family = SCALAR
     order = FIRST
     initial_condition = 1e6
-    # scaling = 1e-2
   []
 
   [Ar]
     family = SCALAR
     order = FIRST
     initial_condition = 3.21883e18
-    #scaling = 1e-15
   []
 
   [Ar*]
     family = SCALAR
     order = FIRST
     initial_condition = 1e6
-    # scaling = 1e-2
   []
 
   [Ar2+]
     family = SCALAR
     order = FIRST
     initial_condition = 1
-    # scaling = 1e-2
   []
 []
 
@@ -163,15 +157,6 @@
   show_var_residual_norms = true
 []
 
-#[UserObjects]
-#  active = 'value_provider'
-#
-#[./value_provider]
-#  type = ValueProvider
-#  property_file = 'data/electron_temperature.txt'
-#[../]
-#[]
-
 [Executioner]
   type = Transient
   end_time = 1e-3
@@ -188,9 +173,6 @@
       growth_factor = 1.01
     []
   []
-  #[TimeIntegrator]
-  #  type = LStableDirk2
-  #[]
 []
 
 [Preconditioning]
