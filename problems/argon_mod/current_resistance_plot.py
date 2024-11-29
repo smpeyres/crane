@@ -12,11 +12,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-filename = 'argon_test_out.csv'
+filename = 'argon_test_mod_out.csv'
 data = pd.read_csv(filename)
 
 data['field'] = data['reduced_field'] * data['Ar'] * 1e6
-data['plasma_resistance'] = 0.004 * data['field'] / data['current']
+data['plasma_resistance'] = 0.002 * data['field'] / data['current']
 
 
 fig, ax1 = plt.subplots()
@@ -38,13 +38,13 @@ ax2.spines['left'].set_color('b')
 ax2.spines['right'].set_color('g')
 
 # Save and show plot
-fig.savefig('current_resistance_plot.png', bbox_inches='tight', dpi=600)
+fig.savefig('current_resistance_plot_mod.png', bbox_inches='tight', dpi=600)
 plt.show()
 
 
 
 data['ballast_voltage'] = 1e5*data['current']
-data['plasma_voltage'] =  0.004 * data['field']
+data['plasma_voltage'] =  0.002 * data['field']
 total_voltage = 1000
 
 fig, ax = plt.subplots()
@@ -68,5 +68,5 @@ ax.legend()
 ax.tick_params(axis='both', which='both', direction='out', top=True, right=True)
 
 # Save and show plot
-fig.savefig('voltage_plot.png', bbox_inches='tight', dpi=600)
+fig.savefig('voltage_plot_mod.png', bbox_inches='tight', dpi=600)
 plt.show()
