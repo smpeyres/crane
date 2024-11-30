@@ -1,0 +1,221 @@
+[Mesh]
+  type = GeneratedMesh
+  dim = 1
+  xmin = 0
+  xmax = 1
+  nx = 1
+[]
+
+[Variables]
+  [e]
+    family = SCALAR
+    order = FIRST
+    initial_condition = 1e6
+  []
+
+  [Ar+]
+    family = SCALAR
+    order = FIRST
+    initial_condition = 1e6
+  []
+
+  [Ar]
+    family = SCALAR
+    order = FIRST
+    # initial_condition = 8.1543668e18 # 100% Ar
+    initial_condition = 8.0728231e18 # 99% Ar
+  []
+
+  [Ar*]
+    family = SCALAR
+    order = FIRST
+    initial_condition = 1e6
+  []
+
+  [Ar2+]
+    family = SCALAR
+    order = FIRST
+    initial_condition = 1
+  []
+
+  [F2]
+    family = SCALAR
+    order = FIRST
+    initial_condition = 8.1543668e16 # 1% F2
+  []
+
+  [F]
+    family = SCALAR
+    order = FIRST
+    initial_condition = 1e6
+  []
+[]
+
+[ScalarKernels]
+  [de_dt]
+    type = ODETimeDerivative
+    variable = e
+  []
+
+  [dAr+_dt]
+    type = ODETimeDerivative
+    variable = Ar+
+  []
+
+  [dAr_dt]
+    type = ODETimeDerivative
+    variable = Ar
+  []
+
+  [dAr*_dt]
+    type = ODETimeDerivative
+    variable = Ar*
+  []
+
+  [dAr2_dt]
+    type = ODETimeDerivative
+    variable = Ar2+
+  []
+
+  [dF2_dt]
+    type = ODETimeDerivative
+    variable = F2
+  []
+
+  [dF_dt]
+    type = ODETimeDerivative
+    variable = F
+  []
+[]
+
+[GlobalReactions]
+  [argon]
+    species = 'e Ar* Ar+ Ar Ar2+ F2 F'
+    file_location = 'data'
+
+    # These are parameters required equation-based rate coefficients
+    equation_constants = 'Tgas J pi pres d_cm r_cm'
+    equation_values = '900 2.405 3.141 760 0.2 0.05'
+    equation_variables = 'Te'
+    sampling_variable = 'reduced_field'
+
+    reactions = 'e + Ar -> e + e + Ar+          : EEDF (Ar_ionization)
+                 e + Ar -> Ar* + e              : EEDF (Ar_excitation)
+                 e + Ar* -> Ar + e              : EEDF (Ar*_deexcitation)
+                 e + Ar* -> Ar+ + e + e         : EEDF (Ar*_ionization)
+                 Ar2+ + e -> Ar* + Ar           : {8.5e-7*((Te/1.5)*11600/300.0)^(-0.67)}
+                 Ar2+ + Ar -> Ar+ + Ar + Ar     : {(6.06e-6/Tgas)*exp(-15130.0/Tgas)}
+                 Ar* + Ar* -> Ar2+ + e          : 6.0e-10
+                 Ar+ + e + e -> Ar + e          : {8.75e-27*((Te/1.5)^(-4.5))}
+                 Ar* + Ar + Ar -> Ar + Ar + Ar  : 1.399e-32
+                 Ar+ + Ar + Ar -> Ar2+ + Ar     : {2.25e-31*(Tgas/300.0)^(-0.4)}
+                 e + F2 -> F + F + e            : {1.18e-8*exp(-5.77/Te)} # Gudmundsson
+                 F + F + Ar -> F2 + Ar           : 2.76e-34 # NIST
+                 F + F + F2 -> F2 + F2          : 2.76e-34 # NIST
+                 F + F + F -> F2 + F            : 2.76e-34 # NIST
+                 F2 + F2 -> F + F + F2          : {7.59e-12*exp(-14313/Tgas)} # NIST
+                 F2 + F -> F + F + F            : {7.59e-12*exp(-14313/Tgas)} # NIST
+                 F2 + Ar -> F + F + Ar          : {7.59e-12*exp(-14313/Tgas)} # NIST'
+  []
+[]
+
+[AuxVariables]
+  [reduced_field]
+    order = FIRST
+    family = SCALAR
+    initial_condition = 6.131684e-20
+  []
+
+  [mobility]
+    order = FIRST
+    family = SCALAR
+  []
+
+  [Te]
+    order = FIRST
+    family = SCALAR
+  []
+
+  [current]
+    order = FIRST
+    family = SCALAR
+  []
+[]
+
+[AuxScalarKernels]
+  [reduced_field_calculate]
+    type = ParsedAuxScalar
+    variable = reduced_field
+    constant_names = 'V d qe R'
+    constant_expressions = '1000 0.002 1.602e-19 1e5'
+    args = 'reduced_field Ar F2 current'
+    function = 'V/(d+R*current/(reduced_field*(Ar+F2)*1e6))/((Ar+F2)*1e6)'
+    execute_on = 'TIMESTEP_END'
+  []
+
+  [e_drift]
+    type = ParsedAuxScalar
+    variable = current
+    constant_names = 'r pi'
+    constant_expressions = '0.0005 3.1415926'
+    args = 'reduced_field mobility Ar F2 e'
+    function = '((reduced_field * mobility * (Ar+F2)*1e6) * 1.6e-19 * pi*(r^2.0) * (e*1e6))'
+    execute_on = 'TIMESTEP_BEGIN'
+  []
+
+  [mobility_calculation]
+    type = ScalarLinearInterpolation
+    variable = mobility
+    sampler = reduced_field
+    property_file = 'data/electron_mobility.txt'
+    execute_on = 'INITIAL TIMESTEP_BEGIN'
+  []
+
+  [temperature_calculation]
+    type = ScalarLinearInterpolation
+    variable = Te
+    sampler = reduced_field
+    property_file = 'data/electron_temperature.txt'
+    execute_on = 'INITIAL TIMESTEP_BEGIN'
+  []
+[]
+
+[Debug]
+  show_var_residual_norms = true
+[]
+
+[Executioner]
+  type = Transient
+  end_time = 1e-3
+  solve_type = linear
+  dtmin = 1e-16
+  dtmax = 1e-6
+  line_search = none
+  steady_state_detection = true
+  [TimeSteppers]
+    [adaptive]
+      type = IterationAdaptiveDT
+      cutback_factor = 0.9
+      dt = 1e-10
+      growth_factor = 1.01
+    []
+  []
+[]
+
+[Preconditioning]
+  [smp]
+    type = SMP
+    full = true
+    #ksp_norm = none
+  []
+[]
+
+[Outputs]
+  [out]
+    type = CSV
+  []
+  [console]
+    type = Console
+    execute_scalars_on = 'none'
+  []
+[]
