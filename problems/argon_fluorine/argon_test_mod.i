@@ -230,6 +230,7 @@
     # IP (Ar) = 15.76 eV
     # IP (F2) = 15.69 eV
     # IP (Ar2) = 14.44 eV # Kushner ISPC 2013
+    # D(F2) = ~1.6 eV
   []
 []
 
