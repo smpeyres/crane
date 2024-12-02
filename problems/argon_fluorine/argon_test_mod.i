@@ -24,8 +24,9 @@
   [Ar]
     family = SCALAR
     order = FIRST
-    initial_condition = 8.1543668e18 # 100% Ar
+    # initial_condition = 8.1543668e18 # 100% Ar
     # initial_condition = 8.0728231e18 # 99% Ar
+    initial_condition = 7.3389301e18 # 90% Ar
     scaling = 1e-18
   []
 
@@ -46,8 +47,8 @@
   [F2]
     family = SCALAR
     order = FIRST
-    initial_condition = 8.1543668e14 # 0.01% F2
-    scaling = 1e-14
+    initial_condition = 8.1543668e17 # 10% F2
+    scaling = 1e-17
   []
 
   [F]
@@ -172,66 +173,63 @@
                   Ar2+ + e -> Ar + Ar           : {5.0e-8}
                   Ar* + Ar* -> Ar+ + e + Ar           : {1.2e-9}
                 # Electron-impact reactions w F2 based on Ma PSST 2024, using Gudmundsson
-                #   # F2 + e -> F- + F              : {4.5e-9*(Te^-1.35)*exp(-0.15/Te)}
+                  F2 + e -> F- + F              : {4.5e-9*(Te^-1.35)*exp(-0.15/Te)}
                   F2 + e -> F2+ + e + e         : {1.37e-8*exp(-20.70/Te)}
                 # All other fluorine-involved reactions in Ma PSST 2024
-                #   ArF* + e -> Ar + F + e        : {2.0e-7} # 2.4e-7 in NRL Electra
-                #   Ar+ + F- -> ArF*              : {1.0e-6}
-                #   F2+ + F- -> F + F + F         : {4.0e-8} # 4.0e-8 in NRL Electra, {1.5e-7*((300/Tgas)^0.5)} in Gudmundsson
-                #   Ar2+ + F- -> ArF* + Ar        : {5.45e-5}
-                #   # Ar* + F2 -> ArF* + F          : {7.5e-10} # 9.4e-10 in NRL Electra
-                #   ArF* + Ar -> Ar + Ar + F      : {9.0e-12} # 9.0e-12 in NRL Electra
-                #   # ArF* + F2 -> Ar + F + F + F   : {1.9e-9}
-                #   ArF* -> Ar + F + hv           : {2.5e8} # 2.67e8 for hv_B, 2.4e8 for hv, and 2.1e7 for hv_A from NRL Electra
+                  ArF* + e -> Ar + F + e        : {2.0e-7} # 2.4e-7 in NRL Electra
+                  # Ar+ + F- -> ArF*              : {1.0e-6}
+                  F2+ + F- -> F + F + F         : {4.0e-8} # 4.0e-8 in NRL Electra, {1.5e-7*((300/Tgas)^0.5)} in Gudmundsson
+                  # Ar2+ + F- -> ArF* + Ar        : {5.45e-5}
+                  Ar* + F2 -> ArF* + F          : {7.5e-10} # 9.4e-10 in NRL Electra
+                  ArF* + Ar -> Ar + Ar + F      : {9.0e-12} # 9.0e-12 in NRL Electra
+                  # ArF* + F2 -> Ar + F + F + F   : {1.9e-9}
+                  ArF* -> Ar + F + hv           : {2.5e8} # 2.67e8 for hv_B, 2.4e8 for hv, and 2.1e7 for hv_A from NRL Electra
                 # Some association and dissociation from NIST kinetics database
-                  F + F + Ar -> F2 + Ar         : {2.67e-37*(Tgas/298)*exp(3190/Tgas)}
-                  F + F + F2 -> F2 + F2         : {2.67e-37*(Tgas/298)*exp(3190/Tgas)}
-                  F + F + F -> F2 + F           : {2.67e-37*(Tgas/298)*exp(3190/Tgas)}
+                  F + F + Ar -> F2 + Ar         : {2.67e-33*(Tgas/298)*exp(3190/Tgas)} # inc x4
+                  F + F + F2 -> F2 + F2         : {2.67e-33*(Tgas/298)*exp(3190/Tgas)} # inc x4
+                  F + F + F -> F2 + F           : {2.67e-33*(Tgas/298)*exp(3190/Tgas)} # inc x4
                   F2 + F2 -> F + F + F2          : {7.59e-12*exp(-14313/Tgas)}
                   F2 + F -> F + F + F            : {7.59e-12*exp(-14313/Tgas)}
                   F2 + Ar -> F + F + Ar          : {7.59e-12*exp(-14313/Tgas)}
-                # # Some reactions from NRL Electra paper
-                #   e + F -> F- + hv                    : {1.0e-12} # 1e-15 in Gudmundsson
-                #   e + ArF* -> Ar* + F-                : {3.0e-8}
-                #   # e + F2 -> F + F + e                 : {3.0e-10}
-                #   ArF* + F -> Ar + F + F              : {1.0e-12}
-                #   ArF* + F2 -> Ar + F + F2            : {1.9e-9}
-                #   ArF* + Ar + Ar -> Ar + Ar + Ar + F  : {5.0e-32}
+                # Some reactions from NRL Electra paper
+                  e + ArF* -> Ar* + F-                : {3.0e-8}
+                  # ArF* + F -> Ar + F + F              : {1.0e-12}
+                  # ArF* + F2 -> Ar + F + F2            : {1.9e-9}
+                  # ArF* + Ar + Ar -> Ar + Ar + Ar + F  : {5.0e-32}
                 # IYMG charge exchange - all based on initial one from Gudmundsson
-                # 5.00e-18 in Mao et al
-                # 1.00e-11 in Huang et al, no reaction between Ar2+ and F, F2?
+                # Assuming only Y+ + Z -> Y + Z+ if IP(Y) > IP(Z)
                 # Removed dissociative charge exchange of F2, F2+ based on Mao et al
-                #   F+ + F2 -> F2+ + F                 : {3.98e-11*((300/Tgas)^0.5)} # 1e-11 Huang et al
-                #   F2+ + F -> F2 + F+                 : {3.98e-11*((300/Tgas)^0.5)}
-                #   F+ + Ar -> F + Ar+                 : {3.98e-11*((300/Tgas)^0.5)} # 1e-11 Huang et al
-                  Ar2+ + F2 -> F2+ + Ar + Ar         : {3.98e-11*((300/Tgas)^0.5)}
-                #   Ar2+ + F -> F+ + Ar + Ar           : {3.98e-11*((300/Tgas)^0.5)}
-                  F2+ + Ar -> F2 + Ar+               : {3.98e-11*((300/Tgas)^0.5)}
+                  F+ + F2 -> F2+ + F                 : {3.98e-11*((300/Tgas)^0.5)} # 1e-11 Huang et al
+                  F+ + Ar -> F + Ar+                 : {3.98e-11*((300/Tgas)^0.5)} # 1e-11 Huang et al
                   Ar+ + F2 -> F2+ + Ar           : {3.98e-11*((300/Tgas)^0.5)} # 1e-11 Huang et al
-                #   Ar+ + F -> F+ + Ar             : {3.98e-11*((300/Tgas)^0.5)}
-                # # Some ion-ion recombination from Gudmundsson
-                #   F- + F+ -> F + F                   : {2.7e-7*((300/Tgas)^0.5)} #2.7e-7 in Huang et al
-                #   F+ + F- + F -> F2 + F              : {8.18e-20*(Tgas^-2.5)}
+                # Some ion-ion recombination from Gudmundsson
+                  F- + F+ -> F + F                   : {2.7e-7*((300/Tgas)^0.5)} #2.7e-7 in Huang et al
+                  F+ + F- + F -> F2 + F              : {8.18e-20*(Tgas^-2.5)}
                 # Recombination IYMG from Kushner GEC
                   e + F2+ -> F + F                   : {3.2e-8*(Te^-0.5)} # Gudmundsson x1 dec, {1e-7*(Te^-0.5)}  Kushner IYMG, Huang et al
-                #   # e + F+ -> F + hv                   : {4.5e-13*(Te^-0.5)} # Huang et al, {5e-13*(Te^-0.7)} Kushner IYMG
-                #   # e + e + F+ -> F + e                : {7e-27*(Te^-4.5)} # Kushner IYMG
-                #   # e + e + F+ -> F + e                : {5.12e-27*(Te^-4.5)} # Huang et al
+                  e + F+ -> F + hv                   : {4.5e-13*(Te^-0.5)} # Huang et al, {5e-13*(Te^-0.7)} Kushner IYMG
+                  e + e + F+ -> F + e                : {5.12e-27*(Te^-4.5)} # Huang et al, {7e-27*(Te^-4.5)} # Kushner IYMG
                 # Ionization & dissociation from Gudmundsson
-                #   e + F -> F+ + e + e            : {1.3e-8*exp(-16.50/Te)} # evil?
-                #   e + F2 -> F+ + F- + e          : {2.26e-9*exp(-21.33/Te)}
-                #   # e + F- -> F + e + e            : {3.27e-10*(Te^1.4)*exp(-2.68/Te)}
-                # # Neutral detachment from Mao et al
-                #   F- + Ar -> F + Ar + e          : {5.27e-14}
-                #   F- + F2 -> F + Ar + e          : {5.27e-14}
-                # # Other reactions from Huang et al
-                #   F- + F -> F2 + e               : {1.4e-10}
+                  e + F -> F+ + e + e            : {1.3e-8*exp(-17.42/Te)} # Modified threshold energy to IP
+                  e + F- -> F + e + e            : {3.27e-10*(Te^1.4)*exp(-3.40/Te)} # Modified threshold energy to EA
+                # Other reactions from Huang et al
+                  F- + F -> F2 + e               : {1.4e-10}
 
-                # Particularly naughty reactions
-                # Ar* + F2 -> Ar + F + F        : {3.1e-10} # Ma PSST 2024
-                # e + F2 -> F + F + e            : {1.18e-8*exp(-5.77/Te)} # Gudmundsson
-
+                # Particularly naughty or unsupported reactions
+                # Ar* + F2 -> Ar + F + F         : {3.1e-10} # Ma PSST 2024
+                # e + F2 -> F + F + e            : {1.18e-8*exp(-5.77/Te)} # Gudmundsson, {3.0e-10} # NRL Electria
+                # F- + Ar -> F + Ar + e          : {5.27e-14} # Mao et al
+                # F- + F2 -> F + F2 + e          : {5.27e-14} # Mao et al
+                # e + F2 -> F+ + F- + e          : {2.26e-9*exp(-21.33/Te)}
+                # e + F -> F- + hv               : {1.0e-12} # 1e-15 in Gudmundsson
 '
+
+    # EA (F) = 3.40 eV
+    # EA (F2) = 3.08 eV
+    # IP (F) = 17.42 eV
+    # IP (Ar) = 15.76 eV
+    # IP (F2) = 15.69 eV
+    # IP (Ar2) = 14.44 eV # Kushner ISPC 2013
   []
 []
 
@@ -264,8 +262,8 @@
     variable = reduced_field
     constant_names = 'V d qe R'
     constant_expressions = '1000 0.002 1.602e-19 1e5'
-    args = 'reduced_field Ar F2 current'
-    function = 'V/(d+R*current/(reduced_field*(Ar+F2)*1e6))/((Ar+F2)*1e6)'
+    args = 'reduced_field Ar F2 F current'
+    function = 'V/(d+R*current/(reduced_field*(Ar+F2+F)*1e6))/((Ar+F2+F)*1e6)'
     execute_on = 'TIMESTEP_END'
   []
 
@@ -274,8 +272,8 @@
     variable = current
     constant_names = 'r pi'
     constant_expressions = '0.0005 3.1415926'
-    args = 'reduced_field mobility Ar F2 e'
-    function = '((reduced_field * mobility * (Ar+F2)*1e6) * 1.6e-19 * pi*(r^2.0) * (e*1e6))'
+    args = 'reduced_field mobility Ar F2 F e'
+    function = '((reduced_field * mobility * (Ar+F2+F)*1e6) * 1.6e-19 * pi*(r^2.0) * (e*1e6))'
     execute_on = 'TIMESTEP_BEGIN'
   []
 
