@@ -221,7 +221,7 @@
                 # F- + Ar -> F + Ar + e          : {5.27e-14} # Mao et al
                 # F- + F2 -> F + F2 + e          : {5.27e-14} # Mao et al
                 # e + F2 -> F+ + F- + e          : {2.26e-9*exp(-21.33/Te)}
-                # e + F -> F- + hv               : {1.0e-12} # 1e-15 in Gudmundsson
+                e + F -> F- + hv               : {1.0e-12} # 1e-15 in Gudmundsson
 '
 
     # EA (F) = 3.40 eV
