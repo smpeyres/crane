@@ -24,9 +24,9 @@
   [Ar]
     family = SCALAR
     order = FIRST
-    # initial_condition = 8.1543668e18 # 100% Ar
+    initial_condition = 8.1543668e18 # 100% Ar
     # initial_condition = 8.0728231e18 # 99% Ar
-    initial_condition = 7.3389301e18 # 90% Ar
+    # initial_condition = 7.3389301e18 # 90% Ar
     scaling = 1e-18
   []
 
@@ -47,8 +47,9 @@
   [F2]
     family = SCALAR
     order = FIRST
-    initial_condition = 8.1543668e17 # 10% F2
-    scaling = 1e-17
+    # initial_condition = 8.1543668e17 # 10% F2
+    initial_condition = 4.0771834e16 # 0.5% F2
+    scaling = 1e-16
   []
 
   [F]

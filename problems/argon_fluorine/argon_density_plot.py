@@ -31,8 +31,8 @@ ax.set_xlabel('Time (s)')
 ax.set_ylabel('Density (cm$^{-3}$)')
 
 # Set axis limits
-ax.set_xlim([1e-10, 1e-3])
-ax.set_ylim([1e5, 1e18])
+ax.set_xlim([1e-10, 2e-4])
+ax.set_ylim([1e4, 1e17])
 
 # Set axis ticks
 ax.tick_params(axis='both', which='both', direction='out', top=True, right=True)
