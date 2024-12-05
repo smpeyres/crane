@@ -23,14 +23,14 @@ ax1.set_xlabel('Time (s)')
 ax1.set_ylabel('Reduced Field, $E/N$ (Td)', color='k')
 ax1.tick_params(axis='y', colors='k')
 ax1.tick_params(axis='both', which='both', direction='out', top=True, right=True)
-ax1.set_xlim([1e-10, 1e-3])
-ax1.set_ylim([1e-1, 1e3])
+ax1.set_xlim([1e-10, 2e-4])
+ax1.set_ylim([1e-1, 1e2])
 
 ax2 = ax1.twinx()
 ax2.semilogx(data['time'], data['Te'], 'r--', linewidth=2)
 ax2.set_ylabel('Electron Temperature, $T_e$ (eV)', color='r')
 ax2.tick_params(axis='y', colors='r')
-ax2.set_ylim(top=7.87)
+ax2.set_ylim(top=6.54)
 
 # Make the right axis red
 ax2.spines['right'].set_color('r')

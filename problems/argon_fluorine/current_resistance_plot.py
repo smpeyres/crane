@@ -18,55 +18,56 @@ data = pd.read_csv(filename)
 data['field'] = data['reduced_field'] * data['Ar'] * 1e6
 data['plasma_resistance'] = 0.002 * data['field'] / data['current']
 
+print(data['plasma_resistance'].iloc[-1])
 
-fig, ax1 = plt.subplots()
+# fig, ax1 = plt.subplots()
 
-# Plot current on the left y-axis
-ax1.loglog(data['time'], data['current']*1000, 'b', label='Current', linewidth=2)
-ax1.set_xlabel('Time (s)')
-ax1.set_ylabel('Current, $I$ (mA)', color='blue')
-ax1.set_xlim([1e-10, 1e-3])
-ax1.tick_params(axis='both', which='both', direction='out', top=True, right=True)
-ax1.tick_params(axis='y', colors='b')
+# # Plot current on the left y-axis
+# ax1.loglog(data['time'], data['current']*1000, 'b', label='Current', linewidth=2)
+# ax1.set_xlabel('Time (s)')
+# ax1.set_ylabel('Current, $I$ (mA)', color='blue')
+# ax1.set_xlim([1e-10, 2e-4])
+# ax1.tick_params(axis='both', which='both', direction='out', top=True, right=True)
+# ax1.tick_params(axis='y', colors='b')
 
-# Create a second y-axis for plasma resistance
-ax2 = ax1.twinx()
-ax2.loglog(data['time'], data['plasma_resistance']/1000, 'g', label='Plasma Resistance', linewidth=2)
-ax2.set_ylabel('Plasma Resistance, $R_p$ (k$\Omega$)', color='g')
-ax2.tick_params(axis='y', colors='g')
-ax2.spines['left'].set_color('b')
-ax2.spines['right'].set_color('g')
+# # Create a second y-axis for plasma resistance
+# ax2 = ax1.twinx()
+# ax2.loglog(data['time'], data['plasma_resistance']/1000, 'g', label='Plasma Resistance', linewidth=2)
+# ax2.set_ylabel('Plasma Resistance, $R_p$ (k$\Omega$)', color='g')
+# ax2.tick_params(axis='y', colors='g')
+# ax2.spines['left'].set_color('b')
+# ax2.spines['right'].set_color('g')
 
-# Save and show plot
-fig.savefig('current_resistance_plot_mod.png', bbox_inches='tight', dpi=600)
-plt.show()
+# # Save and show plot
+# fig.savefig('current_resistance_plot_mod.png', bbox_inches='tight', dpi=600)
+# plt.show()
 
 
 
-data['ballast_voltage'] = 1e5*data['current']
-data['plasma_voltage'] =  0.002 * data['field']
-total_voltage = 1000
+# data['ballast_voltage'] = 1e5*data['current']
+# data['plasma_voltage'] =  0.002 * data['field']
+# total_voltage = 1000
 
-fig, ax = plt.subplots()
+# fig, ax = plt.subplots()
 
-# Plot ballast voltage
-ax.loglog(data['time'], data['ballast_voltage'], 'r', label='$ΔV_B$', linewidth=2)
+# # Plot ballast voltage
+# ax.loglog(data['time'], data['ballast_voltage'], 'r', label='$ΔV_B$', linewidth=2)
 
-# Plot plasma voltage
-ax.loglog(data['time'], data['plasma_voltage'], 'b', label='$ΔV_P$', linewidth=2)
+# # Plot plasma voltage
+# ax.loglog(data['time'], data['plasma_voltage'], 'b', label='$ΔV_P$', linewidth=2)
 
-# Plot the sum of ballast and plasma voltage
-ax.loglog(data['time'], data['ballast_voltage'] + data['plasma_voltage'], 'g', label='$ΔV_B + ΔV_P$', linewidth=2)
+# # Plot the sum of ballast and plasma voltage
+# ax.loglog(data['time'], data['ballast_voltage'] + data['plasma_voltage'], 'g', label='$ΔV_B + ΔV_P$', linewidth=2)
 
-# Plot total voltage
-ax.loglog(data['time'], [total_voltage]*len(data['time']), 'k--', label='$V_A$', linewidth=2)
+# # Plot total voltage
+# ax.loglog(data['time'], [total_voltage]*len(data['time']), 'k--', label='$V_A$', linewidth=2)
 
-ax.set_xlabel('Time (s)')
-ax.set_ylabel('Voltage Drop, $ΔV$ (V)')
-ax.set_xlim([1e-10, 1e-3])
-ax.legend()
-ax.tick_params(axis='both', which='both', direction='out', top=True, right=True)
+# ax.set_xlabel('Time (s)')
+# ax.set_ylabel('Voltage Drop, $ΔV$ (V)')
+# ax.set_xlim([1e-10, 1e-4])
+# ax.legend()
+# ax.tick_params(axis='both', which='both', direction='out', top=True, right=True)
 
-# Save and show plot
-fig.savefig('voltage_plot_mod.png', bbox_inches='tight', dpi=600)
-plt.show()
+# # Save and show plot
+# fig.savefig('voltage_plot_mod.png', bbox_inches='tight', dpi=600)
+# plt.show()
